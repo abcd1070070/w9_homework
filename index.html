@@ -1,0 +1,1838 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>常用軟體快捷鍵速查手冊 — Excel / Word / PowerPoint / VS Code</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-paper: #FAF8F5;
+      --card-bg: #FFFFFF;
+      --border-warm: #DFD9CE;
+      --text-main: #23272F;
+      --text-sub: #5E646E;
+      --active-accent: #2E6F40;
+      --active-soft: #EAF3EC;
+    }
+
+    body {
+      background-color: var(--bg-paper);
+      color: var(--text-main);
+      font-family: 'Noto Sans TC', 'Inter', sans-serif;
+      background-image: radial-gradient(#E2DDD2 0.8px, transparent 0.8px);
+      background-size: 20px 20px;
+    }
+
+    /* 卡片與印刷框線 */
+    .paper-card {
+      background-color: #FFFFFF;
+      border: 1px solid var(--border-warm);
+      box-shadow: 0 2px 4px rgba(35, 39, 47, 0.03);
+    }
+
+    /* 列表中的小鍵帽 (<kbd>) */
+    kbd.keycap {
+      background: linear-gradient(180deg, #FDFCFA 0%, #EFECE5 100%);
+      border: 1px solid #C9C2B4;
+      box-shadow: 0 2px 0 #B5ADA0, inset 0 1px 0 #FFFFFF;
+      border-radius: 5px;
+      padding: 2px 7px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: #23272F;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 26px;
+      line-height: 1.35;
+    }
+
+    /* =====================================================================
+       3D 擬真機械鍵盤底座與球帽 (PBT 雙色成模質感 + 真實下壓行程)
+       ===================================================================== */
+    .mech-case {
+      background: linear-gradient(180deg, #E2DDD3 0%, #D2CBBF 100%);
+      border: 2px solid #BFB7A8;
+      box-shadow:
+        0 8px 0 #A8A092,
+        0 12px 20px rgba(35, 39, 47, 0.12),
+        inset 0 2px 3px rgba(255, 255, 255, 0.6);
+      border-radius: 14px;
+      padding: 12px;
+    }
+
+    .mech-plate {
+      background-color: #383C42;
+      border-radius: 8px;
+      padding: 8px;
+      box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.45);
+    }
+
+    .vk-key {
+      position: relative;
+      background: linear-gradient(180deg, #FBF9F5 0%, #EDE8DF 100%);
+      border: 1px solid #C7C0B3;
+      box-shadow:
+        0 4px 0 #ABA394,
+        0 5px 3px rgba(0, 0, 0, 0.35),
+        inset 0 1px 0 #FFFFFF;
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 600;
+      color: #2C3038;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+      cursor: pointer;
+      transition: transform 0.06s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.06s cubic-bezier(0.2, 0, 0, 1), background 0.1s ease;
+      padding: 0 5px;
+    }
+
+    /* 鍵帽頂部微凹球面光澤 */
+    .vk-key::after {
+      content: '';
+      position: absolute;
+      inset: 3px 4px 5px 4px;
+      border-radius: 4px;
+      border-top: 1px solid rgba(255, 255, 255, 0.7);
+      pointer-events: none;
+    }
+
+    .vk-key.mod-tone {
+      background: linear-gradient(180deg, #E5DFD3 0%, #D5CEC0 100%);
+      color: #3B4048;
+    }
+
+    .vk-key:active,
+    .vk-key.lit {
+      background: var(--active-accent) !important;
+      border-color: rgba(0, 0, 0, 0.25) !important;
+      color: #FFFFFF !important;
+      box-shadow:
+        0 1px 0 rgba(0, 0, 0, 0.4),
+        0 1px 2px rgba(0, 0, 0, 0.2),
+        inset 0 1px 2px rgba(255, 255, 255, 0.25) !important;
+      transform: translateY(3px);
+    }
+
+    /* 列表卡片互動 */
+    .shortcut-row {
+      transition: border-color 0.14s ease, background-color 0.14s ease, transform 0.1s ease;
+    }
+    .shortcut-row:hover {
+      border-color: #B5ADA0;
+    }
+    .shortcut-row.selected-row {
+      border-color: var(--active-accent);
+      background-color: var(--active-soft);
+      box-shadow: inset 3px 0 0 var(--active-accent);
+    }
+
+    /* 仿真視窗動畫 */
+    @keyframes popHighlight {
+      0% { transform: scale(0.98); opacity: 0.75; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .sim-animate {
+      animation: popHighlight 0.18s ease-out;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- ==================== 1. 頂部導覽與系統切換列 (Header & OS Switcher) ==================== -->
+  <header class="sticky top-0 z-30 bg-[#FAF8F5]/95 backdrop-blur-sm border-b border-[#DFD9CE]">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-3">
+      
+      <!-- 網站標題與機械鍵帽標誌（純幾何線條，無任何 Emoji） -->
+      <button onclick="switchGuide('overview')" class="flex items-center gap-3 text-left group">
+        <div class="w-9 h-9 rounded-lg bg-[#23272F] text-[#FAF8F5] flex items-center justify-center font-mono text-xs font-bold tracking-tight border-b-2 border-[#5E646E]">
+          [⌘K]
+        </div>
+        <div>
+          <span class="block text-sm sm:text-base font-bold text-[#23272F] tracking-tight group-hover:underline">常用軟體快捷鍵速查手冊</span>
+          <span class="block text-[11px] font-mono text-[#5E646E]">Tactile Shortcut Field Manual · Excel / Word / PPT / VS Code</span>
+        </div>
+      </button>
+
+      <!-- 軟體分頁切換列 -->
+      <nav class="flex items-center gap-1 bg-[#EDE8DF] p-1 rounded-lg border border-[#DCD5C7] overflow-x-auto max-w-full" aria-label="軟體切換分頁">
+        <button id="nav-overview" onclick="switchGuide('overview')" class="px-3 py-1.5 rounded-md text-xs sm:text-sm font-medium transition whitespace-nowrap">
+          手冊總覽
+        </button>
+        <button id="nav-excel" onclick="switchGuide('excel')" class="px-3 py-1.5 rounded-md text-xs sm:text-sm font-medium transition whitespace-nowrap">
+          Excel
+        </button>
+        <button id="nav-word" onclick="switchGuide('word')" class="px-3 py-1.5 rounded-md text-xs sm:text-sm font-medium transition whitespace-nowrap">
+          Word
+        </button>
+        <button id="nav-powerpoint" onclick="switchGuide('powerpoint')" class="px-3 py-1.5 rounded-md text-xs sm:text-sm font-medium transition whitespace-nowrap">
+          PowerPoint
+        </button>
+        <button id="nav-vscode" onclick="switchGuide('vscode')" class="px-3 py-1.5 rounded-md text-xs sm:text-sm font-medium transition whitespace-nowrap">
+          VS Code
+        </button>
+        <button id="nav-pinned" onclick="switchGuide('pinned')" class="px-3 py-1.5 rounded-md text-xs sm:text-sm font-medium transition whitespace-nowrap flex items-center gap-1.5">
+          <span>釘選夾</span>
+          <span id="pinnedCountBadge" class="px-1.5 py-0.2 rounded text-[11px] font-mono bg-[#DCD5C7] text-[#23272F]">3</span>
+        </button>
+      </nav>
+
+      <!-- 右側：機械軸體音效切換 + Windows / Mac 系統切換 -->
+      <div class="flex items-center gap-2">
+        <!-- 機械軸體聲學回饋選單 (Web Audio 物理合成) -->
+        <div class="flex items-center gap-1 bg-[#EDE8DF] px-2 py-1 rounded-lg border border-[#DCD5C7]" title="點擊鍵帽或敲擊實體鍵盤時的軸體聲音">
+          <span class="text-[11px] font-mono text-[#5E646E]">軸體聲:</span>
+          <select id="switchSoundSelect" onchange="setSwitchProfile(this.value)" class="bg-transparent text-xs font-mono font-semibold text-[#23272F] focus:outline-none cursor-pointer">
+            <option value="thock">PBT 麻將音 (Thock)</option>
+            <option value="blue">清脆青軸 (Clicky)</option>
+            <option value="red">靜音紅軸 (Linear)</option>
+            <option value="mute">關閉音效 (Mute)</option>
+          </select>
+        </div>
+
+        <!-- Windows / Mac 一鍵切換開關 -->
+        <div class="flex items-center gap-1 bg-[#EDE8DF] p-1 rounded-lg border border-[#DCD5C7]" role="group" aria-label="作業系統切換">
+          <button id="osBtn-win" onclick="setOS('win')" class="px-2.5 py-1 rounded text-xs font-mono font-semibold transition bg-white text-[#23272F] shadow-sm">
+            Win
+          </button>
+          <button id="osBtn-mac" onclick="setOS('mac')" class="px-2.5 py-1 rounded text-xs font-mono font-semibold transition text-[#5E646E] hover:text-[#23272F]">
+            Mac
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 主內容容器 -->
+  <main class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6">
+
+    <!-- ==================== 首頁總覽視圖 (Overview Mode) ==================== -->
+    <section id="view-overview" class="space-y-6">
+      <div class="paper-card rounded-xl p-6 sm:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+        <div class="lg:col-span-7 space-y-3.5">
+          <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded bg-[#EDE8DF] text-[#23272F] text-xs font-mono font-medium">
+            <span>DESKTOP FIELD MANUAL</span>
+            <span class="text-[#9AA0A6]">/</span>
+            <span>HARDWARE &amp; GUI SIMULATOR</span>
+          </div>
+          <h1 class="text-2xl sm:text-3xl font-bold text-[#23272F] tracking-tight leading-snug">
+            帶有機械鍵盤壓感、軸體聲學與微縮軟體視窗的桌面速查手冊
+          </h1>
+          <p class="text-sm text-[#5E646E] leading-relaxed">
+            收錄 <strong>Excel</strong>、<strong>Word</strong>、<strong>PowerPoint</strong> 與 <strong>VS Code</strong> 共 36 組高頻率快捷鍵。點選任一分頁後，你不僅能在 <strong>3D 機械鍵盤模型</strong>上聽見真實的鍵帽敲擊聲，右側還會同步啟動對應的<strong>微縮軟體仿真視窗</strong>，即時演練公式加總、段落排版與多重游標改名。
+          </p>
+          <div class="pt-1 flex flex-wrap gap-2.5">
+            <button onclick="switchGuide('excel')" class="px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold text-white bg-[#2E6F40] hover:opacity-95 transition">
+              開啟 Excel 仿真練習器 →
+            </button>
+            <button onclick="switchGuide('vscode')" class="px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold text-[#23272F] bg-[#EDE8DF] hover:bg-[#E2DDD2] border border-[#C9C2B4] transition">
+              開啟 VS Code 仿真練習器
+            </button>
+          </div>
+        </div>
+
+        <!-- 機械軸體結構與鍵帽工程製圖 SVG 插畫 (取代傳統罐頭圖示) -->
+        <div class="lg:col-span-5 flex justify-center">
+          <svg viewBox="0 0 420 240" class="w-full max-w-[400px] h-auto rounded-lg border border-[#DFD9CE] bg-[#F4F0E8] p-2" role="img" aria-label="機械鍵盤軸體剖面與雙色鍵帽工程圖解">
+            <!-- 方格工程底紙 -->
+            <rect x="0" y="0" width="420" height="240" rx="6" fill="#F4F0E8"/>
+            <g stroke="#E5DFD3" stroke-width="1">
+              <line x1="0" y1="40" x2="420" y2="40"/><line x1="0" y1="80" x2="420" y2="80"/>
+              <line x1="0" y1="120" x2="420" y2="120"/><line x1="0" y1="160" x2="420" y2="160"/>
+              <line x1="0" y1="200" x2="420" y2="200"/>
+              <line x1="60" y1="0" x2="60" y2="240"/><line x1="120" y1="0" x2="120" y2="240"/>
+              <line x1="180" y1="0" x2="180" y2="240"/><line x1="240" y1="0" x2="240" y2="240"/>
+              <line x1="300" y1="0" x2="300" y2="240"/><line x1="360" y1="0" x2="360" y2="240"/>
+            </g>
+
+            <!-- 左側：機械軸與立體鍵帽爆炸圖 -->
+            <g transform="translate(34, 24)">
+              <text x="0" y="12" fill="#5E646E" font-family="JetBrains Mono, monospace" font-size="10">FIG 01. PBT KEYCAP &amp; TACTILE SWITCH</text>
+              <!-- PBT 鍵帽外殼 -->
+              <polygon points="35,28 115,28 130,68 20,68" fill="#FFFFFF" stroke="#23272F" stroke-width="2"/>
+              <path d="M40,32 Q75,40 110,32" fill="none" stroke="#2E6F40" stroke-width="2.5"/>
+              <text x="75" y="54" text-anchor="middle" fill="#23272F" font-family="JetBrains Mono, monospace" font-weight="700" font-size="13">Ctrl + E</text>
+
+              <!-- 十字軸心 (Switch Stem) -->
+              <rect x="65" y="78" width="20" height="18" fill="#C4512D" stroke="#23272F" stroke-width="1.8"/>
+              <line x1="55" y1="87" x2="95" y2="87" stroke="#23272F" stroke-width="1.8"/>
+
+              <!-- 軸體上蓋與彈簧底座 -->
+              <polygon points="42,102 108,102 116,142 34,142" fill="#E5DFD3" stroke="#23272F" stroke-width="2"/>
+              <path d="M62,110 L88,116 L62,122 L88,128 L62,134" fill="none" stroke="#0066B8" stroke-width="2"/>
+              <!-- 金屬針腳 -->
+              <line x1="60" y1="142" x2="60" y2="160" stroke="#B45309" stroke-width="3"/>
+              <line x1="90" y1="142" x2="90" y2="160" stroke="#B45309" stroke-width="3"/>
+              <text x="75" y="180" text-anchor="middle" fill="#5E646E" font-family="JetBrains Mono, monospace" font-size="10">4.0mm TOTAL TRAVEL</text>
+            </g>
+
+            <!-- 右側：四軟體仿真視窗縮圖 -->
+            <g transform="translate(216, 24)">
+              <text x="0" y="12" fill="#5E646E" font-family="JetBrains Mono, monospace" font-size="10">FIG 02. LIVE GUI SANDBOX</text>
+              <rect x="4" y="28" width="174" height="142" rx="6" fill="#C9C2B4"/>
+              <rect x="0" y="24" width="174" height="142" rx="6" fill="#FFFFFF" stroke="#23272F" stroke-width="2"/>
+              <!-- 視窗頂部列 -->
+              <rect x="0" y="24" width="174" height="22" rx="4" fill="#23272F"/>
+              <circle cx="12" cy="35" r="3" fill="#C4512D"/>
+              <circle cx="22" cy="35" r="3" fill="#D97706"/>
+              <circle cx="32" cy="35" r="3" fill="#2E6F40"/>
+              <!-- 模擬試算表網格 -->
+              <rect x="12" y="56" width="150" height="22" fill="#EAF3EC" stroke="#2E6F40" stroke-width="1.5"/>
+              <text x="20" y="71" fill="#2E6F40" font-family="JetBrains Mono, monospace" font-weight="700" font-size="11">fx =SUM(B2:B4)</text>
+              <rect x="12" y="84" width="72" height="20" fill="#FAF8F5" stroke="#D6D0C4"/>
+              <rect x="90" y="84" width="72" height="20" fill="#FAF8F5" stroke="#D6D0C4"/>
+              <rect x="12" y="108" width="150" height="22" fill="#E6F2FA" stroke="#0066B8" stroke-width="1.5"/>
+              <text x="20" y="123" fill="#0066B8" font-family="JetBrains Mono, monospace" font-weight="600" font-size="10">&gt; Format Document</text>
+              <text x="87" y="154" text-anchor="middle" fill="#5E646E" font-family="JetBrains Mono, monospace" font-size="9.5">REALTIME STATE FEEDBACK</text>
+            </g>
+          </svg>
+        </div>
+      </div>
+
+      <!-- 四大軟體速查入口卡片 -->
+      <div>
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="text-base font-bold text-[#23272F]">四大軟體速查與仿真視窗分頁</h2>
+          <span class="text-xs font-mono text-[#5E646E]">點選任一卡片進入 3D 鍵盤與軟體模擬器</span>
+        </div>
+        <div id="overviewCardsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"></div>
+      </div>
+
+      <!-- 規則結構說明區 -->
+      <div class="paper-card rounded-xl p-5 sm:p-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3.5 border-b border-[#DFD9CE]">
+          <div>
+            <h2 class="text-base font-bold text-[#23272F]">AGENTS.md 規則對應與模組化延伸架構</h2>
+            <p class="text-xs text-[#5E646E] mt-0.5">將「3D 機械鍵盤物理回饋」、「微縮軟體仿真視窗」與「快捷鍵資料 Schema」標準化分離。</p>
+          </div>
+          <span class="text-xs font-mono px-2.5 py-1 rounded bg-[#EDE8DF] text-[#23272F]">4 Software Suites · 36 Interactive Demos</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 text-xs leading-relaxed text-[#5E646E]">
+          <div class="p-3.5 rounded-lg bg-[#FAF8F5] border border-[#DFD9CE]">
+            <div class="font-bold text-[#23272F] mb-1">01 / 物理級鍵帽行程與軸體音效</div>
+            使用 Web Audio API 即時合成機械鍵盤的按下（Key-Down）與回彈（Key-Up）雙重聲學回饋，支援切換麻將音、青軸與紅軸。
+          </div>
+          <div class="p-3.5 rounded-lg bg-[#FAF8F5] border border-[#DFD9CE]">
+            <div class="font-bold text-[#23272F] mb-1">02 / 軟體專屬仿真畫布 (Mini App Sandbox)</div>
+            不再只是乾巴巴的文字說明：Excel 分頁內建真實試算表網格、Word 內建文件排版紙張、PPT 內建簡報畫布、VS Code 內建程式碼編輯器。
+          </div>
+          <div class="p-3.5 rounded-lg bg-[#FAF8F5] border border-[#DFD9CE]">
+            <div class="font-bold text-[#23272F] mb-1">03 / 依規則無縫擴充新頁面</div>
+            所有分頁共用同一套版面與鍵盤組件，AI 只要依照 <code class="font-mono text-[#23272F]">AGENTS.md</code> 填入新軟體色票與快捷鍵陣列，即可快速長出新分頁。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 個別軟體速查分頁視圖 (Software Guide Mode) ==================== -->
+    <section id="view-guide" class="hidden space-y-6">
+      
+      <!-- 區塊 2：軟體橫幅與工程圖解區 (Software Banner) -->
+      <div id="guideBanner" class="paper-card rounded-xl p-5 sm:p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-l-4">
+        <div class="space-y-1.5 max-w-2xl">
+          <div class="flex items-center gap-2">
+            <span id="guideBadge" class="text-xs font-mono font-semibold px-2.5 py-0.5 rounded">試算表</span>
+            <span id="guideCountLabel" class="text-xs font-mono text-[#5E646E]">9 組常用快捷鍵</span>
+          </div>
+          <h1 id="guideTitle" class="text-2xl font-bold text-[#23272F]">Microsoft Excel 快捷鍵速查表</h1>
+          <p id="guideTagline" class="text-xs sm:text-sm text-[#5E646E] leading-relaxed"></p>
+        </div>
+
+        <div id="guideIllustration" class="shrink-0 self-end md:self-center"></div>
+      </div>
+
+      <!-- 區塊 3：3D 擬真機械鍵盤 + 微縮軟體仿真視窗 (Interactive 3D Keyboard & Live App Simulator) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch">
+        
+        <!-- 左側：3D 擬真機械鍵盤模型 -->
+        <div class="lg:col-span-7 paper-card rounded-xl p-4 sm:p-5 flex flex-col justify-between">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+            <div>
+              <span class="text-xs font-bold text-[#23272F] tracking-tight">3D 機械鍵盤仿真模型</span>
+              <span class="text-[11px] text-[#5E646E] ml-1.5">直接用滑鼠點擊鍵帽、點選下方列表，或敲擊你的實體鍵盤</span>
+            </div>
+            <div class="flex flex-wrap items-center gap-1.5">
+              <button id="kbCaptureBtn" onclick="toggleKeyboardCapture()" class="text-[11px] font-mono font-semibold px-2.5 py-1 rounded bg-[#23272F] text-white border border-[#23272F] transition" title="開啟時會攔截網頁預設快捷鍵（防止空白鍵捲動、Tab 亂跳或 Ctrl+F/P 彈出瀏覽器視窗）">
+                ● 實體鍵盤攔截：開啟
+              </button>
+              <button onclick="replayCurrentCombo()" class="text-[11px] font-mono font-semibold px-2.5 py-1 rounded bg-[#EDE8DF] hover:bg-[#DFD9CE] text-[#23272F] border border-[#C9C2B4] transition">
+                ▶ 連按示範
+              </button>
+              <span id="activeComboPill" class="text-xs font-mono font-bold px-2.5 py-1 rounded bg-[#EDE8DF] text-[#23272F]">
+                等待觸發
+              </span>
+            </div>
+          </div>
+
+          <!-- 機械鍵盤鋁坨外殼與定位板 -->
+          <div class="mech-case overflow-x-auto">
+            <div class="mech-plate space-y-1.5 min-w-[460px]">
+              <!-- Row 1 -->
+              <div class="grid grid-cols-12 gap-1.5">
+                <div onclick="pressVirtualKey('Esc')" data-key="Esc" class="vk-key mod-tone">Esc</div>
+                <div onclick="pressVirtualKey('F2')" data-key="F2" class="vk-key">F2</div>
+                <div onclick="pressVirtualKey('F4')" data-key="F4" class="vk-key">F4</div>
+                <div onclick="pressVirtualKey('F5')" data-key="F5" class="vk-key">F5</div>
+                <div onclick="pressVirtualKey('1')" data-key="1" class="vk-key">1</div>
+                <div onclick="pressVirtualKey('2')" data-key="2" class="vk-key">2</div>
+                <div onclick="pressVirtualKey('3')" data-key="3" class="vk-key">3</div>
+                <div onclick="pressVirtualKey('5')" data-key="5" class="vk-key">5</div>
+                <div onclick="pressVirtualKey('-')" data-key="-" class="vk-key">-</div>
+                <div onclick="pressVirtualKey('=')" data-key="=" class="vk-key">=</div>
+                <div onclick="pressVirtualKey('Backspace')" data-key="Backspace" class="vk-key mod-tone col-span-2">⌫ Back</div>
+              </div>
+              <!-- Row 2 -->
+              <div class="grid grid-cols-12 gap-1.5">
+                <div onclick="pressVirtualKey('Tab')" data-key="Tab" class="vk-key mod-tone col-span-2">Tab ⇥</div>
+                <div onclick="pressVirtualKey('Q')" data-key="Q" class="vk-key">Q</div>
+                <div onclick="pressVirtualKey('W')" data-key="W" class="vk-key">W</div>
+                <div onclick="pressVirtualKey('E')" data-key="E" class="vk-key">E</div>
+                <div onclick="pressVirtualKey('R')" data-key="R" class="vk-key">R</div>
+                <div onclick="pressVirtualKey('T')" data-key="T" class="vk-key">T</div>
+                <div onclick="pressVirtualKey('Y')" data-key="Y" class="vk-key">Y</div>
+                <div onclick="pressVirtualKey('U')" data-key="U" class="vk-key">U</div>
+                <div onclick="pressVirtualKey('I')" data-key="I" class="vk-key">I</div>
+                <div onclick="pressVirtualKey('O')" data-key="O" class="vk-key">O</div>
+                <div onclick="pressVirtualKey('P')" data-key="P" class="vk-key">P</div>
+              </div>
+              <!-- Row 3 -->
+              <div class="grid grid-cols-12 gap-1.5">
+                <div onclick="pressVirtualKey('A')" data-key="A" class="vk-key">A</div>
+                <div onclick="pressVirtualKey('S')" data-key="S" class="vk-key">S</div>
+                <div onclick="pressVirtualKey('D')" data-key="D" class="vk-key">D</div>
+                <div onclick="pressVirtualKey('F')" data-key="F" class="vk-key">F</div>
+                <div onclick="pressVirtualKey('G')" data-key="G" class="vk-key">G</div>
+                <div onclick="pressVirtualKey('H')" data-key="H" class="vk-key">H</div>
+                <div onclick="pressVirtualKey('J')" data-key="J" class="vk-key">J</div>
+                <div onclick="pressVirtualKey('K')" data-key="K" class="vk-key">K</div>
+                <div onclick="pressVirtualKey('L')" data-key="L" class="vk-key">L</div>
+                <div onclick="pressVirtualKey(';')" data-key=";" class="vk-key">;</div>
+                <div onclick="pressVirtualKey('Enter')" data-key="Enter" class="vk-key mod-tone col-span-2">Enter ↵</div>
+              </div>
+              <!-- Row 4 -->
+              <div class="grid grid-cols-12 gap-1.5">
+                <div onclick="pressVirtualKey('Shift')" data-key="Shift" class="vk-key mod-tone col-span-2">⇧ Shift</div>
+                <div onclick="pressVirtualKey('Z')" data-key="Z" class="vk-key">Z</div>
+                <div onclick="pressVirtualKey('X')" data-key="X" class="vk-key">X</div>
+                <div onclick="pressVirtualKey('C')" data-key="C" class="vk-key">C</div>
+                <div onclick="pressVirtualKey('V')" data-key="V" class="vk-key">V</div>
+                <div onclick="pressVirtualKey('B')" data-key="B" class="vk-key">B</div>
+                <div onclick="pressVirtualKey('N')" data-key="N" class="vk-key">N</div>
+                <div onclick="pressVirtualKey('M')" data-key="M" class="vk-key">M</div>
+                <div onclick="pressVirtualKey('.')" data-key="." class="vk-key">.</div>
+                <div onclick="pressVirtualKey('/')" data-key="/" class="vk-key">/</div>
+                <div onclick="pressVirtualKey('Up')" data-key="Up" class="vk-key mod-tone">↑</div>
+              </div>
+              <!-- Row 5: 依 Win / Mac 動態切換底排修飾鍵 -->
+              <div class="grid grid-cols-12 gap-1.5">
+                <div id="vk-mod-1" onclick="pressVirtualKey(this.getAttribute('data-key'))" data-key="Ctrl" class="vk-key mod-tone col-span-2">Ctrl</div>
+                <div id="vk-mod-2" onclick="pressVirtualKey(this.getAttribute('data-key'))" data-key="Win" class="vk-key mod-tone col-span-2">⊞ Win</div>
+                <div id="vk-mod-3" onclick="pressVirtualKey(this.getAttribute('data-key'))" data-key="Alt" class="vk-key mod-tone col-span-2">Alt</div>
+                <div onclick="pressVirtualKey('Space')" data-key="Space" class="vk-key col-span-3">Space</div>
+                <div onclick="pressVirtualKey('Left')" data-key="Left" class="vk-key mod-tone">←</div>
+                <div onclick="pressVirtualKey('Down')" data-key="Down" class="vk-key mod-tone">↓</div>
+                <div onclick="pressVirtualKey('Right')" data-key="Right" class="vk-key mod-tone">→</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-2.5 flex items-center justify-between text-[11px] font-mono text-[#5E646E]">
+            <span id="acousticStatusText">ACOUSTIC ENGINE: PBT THOCK (雙段按壓與回彈物理合成音)</span>
+            <span>KEY ROLLOVER: NKRO</span>
+          </div>
+        </div>
+
+        <!-- 右側：微縮軟體仿真視窗 (Interactive Mini App Simulator) -->
+        <div class="lg:col-span-5 paper-card rounded-xl overflow-hidden flex flex-col justify-between border border-[#C9C2B4]">
+          <!-- 仿真軟體視窗標題列 -->
+          <div id="simWindowHeader" class="px-3.5 py-2 bg-[#23272F] text-white flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-[#C4512D] inline-block"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-[#D97706] inline-block"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-[#2E6F40] inline-block"></span>
+              <span id="simWindowTitle" class="ml-1 text-xs font-mono font-semibold tracking-tight">Excel.exe — 報表模擬視窗</span>
+            </div>
+            <span id="demoCategoryTag" class="text-[10px] font-mono px-2 py-0.5 rounded bg-white/15 text-white">基礎操作</span>
+          </div>
+
+          <!-- 仿真軟體互動畫布本體 (依 Excel / Word / PPT / VS Code 切換真實 UI) -->
+          <div id="simViewport" class="flex-1 bg-[#F7F5F0] p-3.5 flex flex-col justify-between min-h-[210px]">
+            <!-- 由 renderMiniSimulator() 動態注入真實試算表/編輯器 UI -->
+          </div>
+
+          <!-- 底部快捷鍵解析說明列 -->
+          <div class="p-3.5 bg-white border-t border-[#DFD9CE] flex items-center justify-between gap-3">
+            <div class="min-w-0">
+              <div id="demoTitle" class="text-xs sm:text-sm font-bold text-[#23272F] truncate">一鍵自動加總</div>
+              <p id="demoDesc" class="text-[11px] text-[#5E646E] truncate mt-0.5">在數字欄位下方按下，自動插入 =SUM() 並計算總和。</p>
+            </div>
+            <button onclick="toggleSimState()" id="simToggleBtn" class="shrink-0 px-3 py-1.5 rounded text-xs font-mono font-semibold text-white transition">
+              切換前後狀態
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- 區塊 4：搜尋、分類篩選與快捷鍵速查表 (Filter & Shortcut Cards) -->
+      <div class="space-y-4">
+        <div class="paper-card rounded-xl p-3.5 sm:p-4 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+          <div class="flex items-center gap-1.5 overflow-x-auto" role="tablist" aria-label="快捷鍵分類篩選">
+            <button id="catFilter-all" onclick="setCategoryFilter('all')" class="px-3 py-1.5 rounded-lg text-xs font-semibold transition">
+              全部 (9)
+            </button>
+            <button id="catFilter-基礎操作" onclick="setCategoryFilter('基礎操作')" class="px-3 py-1.5 rounded-lg text-xs font-semibold transition">
+              基礎操作
+            </button>
+            <button id="catFilter-編輯排版" onclick="setCategoryFilter('編輯排版')" class="px-3 py-1.5 rounded-lg text-xs font-semibold transition">
+              編輯排版
+            </button>
+            <button id="catFilter-效率進階" onclick="setCategoryFilter('效率進階')" class="px-3 py-1.5 rounded-lg text-xs font-semibold transition">
+              效率進階
+            </button>
+          </div>
+
+          <!-- 關鍵字搜尋框 (使用純 SVG 放大鏡取代 Emoji) -->
+          <div class="relative sm:w-64">
+            <input id="shortcutSearchInput" type="text" oninput="handleShortcutSearch(this.value)" placeholder="搜尋功能或按鍵 (如：加總、粗體、P)..." class="w-full bg-[#FAF8F5] border border-[#C9C2B4] focus:border-[#23272F] rounded-lg pl-8 pr-3 py-1.5 text-xs text-[#23272F] placeholder-[#8C929C] focus:outline-none transition" />
+            <svg class="w-3.5 h-3.5 text-[#5E646E] absolute left-2.5 top-2.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </div>
+        </div>
+
+        <!-- 快捷鍵卡片網格 -->
+        <div id="shortcutsGrid" class="grid grid-cols-1 md:grid-cols-3 gap-3.5"></div>
+      </div>
+
+    </section>
+
+    <!-- ==================== 常用釘選夾視圖 (Pinned Mode) ==================== -->
+    <section id="view-pinned" class="hidden space-y-5">
+      <div class="paper-card rounded-xl p-5 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div>
+          <span class="text-xs font-mono font-semibold px-2.5 py-0.5 rounded bg-[#EDE8DF] text-[#23272F]">PINNED SHORTCUTS</span>
+          <h1 class="text-2xl font-bold text-[#23272F] mt-1">常用釘選快捷鍵索引夾</h1>
+          <p class="text-xs sm:text-sm text-[#5E646E] mt-0.5">將跨軟體最常忘記的組合鍵釘選於此，點擊任一卡片即可跳轉至該軟體仿真視窗練習。</p>
+        </div>
+        <button onclick="switchGuide('excel')" class="px-3.5 py-2 rounded-lg text-xs font-semibold bg-[#EDE8DF] hover:bg-[#DFD9CE] text-[#23272F] transition">
+          ← 返回軟體速查分頁
+        </button>
+      </div>
+      <div id="pinnedGrid" class="grid grid-cols-1 md:grid-cols-3 gap-3.5"></div>
+    </section>
+
+  </main>
+
+  <!-- 頁尾說明 -->
+  <footer class="border-t border-[#DFD9CE] bg-[#FAF8F5] py-5 px-4 sm:px-6 mt-10">
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-[#5E646E]">
+      <div>常用軟體快捷鍵速查手冊 · Excel / Word / PowerPoint / VS Code</div>
+      <div class="font-mono">3D Mechanical Switch Synth + Interactive App Sandbox</div>
+    </div>
+  </footer>
+
+  <script>
+    // =========================================================================
+    // 1. WEB AUDIO 機械鍵盤物理音效合成器 (支援 PBT 麻將音 / 青軸 / 紅軸)
+    // =========================================================================
+    let audioCtx = null;
+    let switchProfile = "thock"; // 'thock' | 'blue' | 'red' | 'mute'
+
+    function ensureAudioCtx() {
+      if (!audioCtx) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioContextClass) audioCtx = new AudioContextClass();
+      }
+      if (audioCtx && audioCtx.state === "suspended") {
+        audioCtx.resume();
+      }
+    }
+
+    function playKeystrokeSound(isKeyUp = false) {
+      if (switchProfile === "mute") return;
+      try {
+        ensureAudioCtx();
+        if (!audioCtx) return;
+
+        const now = audioCtx.currentTime;
+
+        // 1. 短促衝擊噪訊 (模擬鍵帽觸底與軸心摩擦)
+        const bufferSize = Math.floor(audioCtx.sampleRate * 0.025);
+        const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+        const output = noiseBuffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          output[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.3));
+        }
+        const whiteNoise = audioCtx.createBufferSource();
+        whiteNoise.buffer = noiseBuffer;
+
+        const filter = audioCtx.createBiquadFilter();
+        const noiseGain = audioCtx.createGain();
+
+        if (switchProfile === "thock") {
+          // 渾厚低沉的 PBT 麻將音 (Low-pass 濾波)
+          filter.type = "bandpass";
+          filter.frequency.setValueAtTime(isKeyUp ? 420 : 310, now);
+          filter.Q.setValueAtTime(1.8, now);
+          noiseGain.gain.setValueAtTime(isKeyUp ? 0.18 : 0.35, now);
+        } else if (switchProfile === "blue") {
+          // 清脆高頻的青軸段落聲
+          filter.type = "bandpass";
+          filter.frequency.setValueAtTime(isKeyUp ? 2200 : 2800, now);
+          filter.Q.setValueAtTime(3.2, now);
+          noiseGain.gain.setValueAtTime(isKeyUp ? 0.15 : 0.28, now);
+        } else {
+          // 輕柔線性的靜音紅軸
+          filter.type = "lowpass";
+          filter.frequency.setValueAtTime(240, now);
+          noiseGain.gain.setValueAtTime(isKeyUp ? 0.08 : 0.16, now);
+        }
+
+        noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.024);
+        whiteNoise.connect(filter);
+        filter.connect(noiseGain);
+        noiseGain.connect(audioCtx.destination);
+        whiteNoise.start(now);
+
+        // 2. 腔體共鳴低頻正弦波 (模擬鋁坨定位板回音)
+        const osc = audioCtx.createOscillator();
+        const oscGain = audioCtx.createGain();
+        if (switchProfile === "thock") {
+          osc.type = "triangle";
+          osc.frequency.setValueAtTime(isKeyUp ? 165 : 135, now);
+          osc.frequency.exponentialRampToValueAtTime(48, now + 0.038);
+          oscGain.gain.setValueAtTime(isKeyUp ? 0.14 : 0.26, now);
+          oscGain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+        } else if (switchProfile === "blue") {
+          osc.type = "sine";
+          osc.frequency.setValueAtTime(isKeyUp ? 1100 : 1450, now);
+          osc.frequency.exponentialRampToValueAtTime(220, now + 0.018);
+          oscGain.gain.setValueAtTime(isKeyUp ? 0.08 : 0.18, now);
+          oscGain.gain.exponentialRampToValueAtTime(0.001, now + 0.02);
+        } else {
+          osc.type = "sine";
+          osc.frequency.setValueAtTime(110, now);
+          osc.frequency.exponentialRampToValueAtTime(45, now + 0.025);
+          oscGain.gain.setValueAtTime(0.1, now);
+          oscGain.gain.exponentialRampToValueAtTime(0.001, now + 0.025);
+        }
+
+        osc.connect(oscGain);
+        oscGain.connect(audioCtx.destination);
+        osc.start(now);
+        osc.stop(now + 0.045);
+      } catch (e) {}
+    }
+
+    function setSwitchProfile(profile) {
+      switchProfile = profile;
+      const labels = {
+        thock: "ACOUSTIC ENGINE: PBT THOCK (雙段按壓與回彈物理合成音)",
+        blue: "ACOUSTIC ENGINE: CHERRY MX BLUE (清脆段落青軸聲)",
+        red: "ACOUSTIC ENGINE: SILENT LINEAR RED (低噪線性紅軸聲)",
+        mute: "ACOUSTIC ENGINE: MUTED (靜音模式)"
+      };
+      const el = document.getElementById("acousticStatusText");
+      if (el) el.textContent = labels[profile] || labels.thock;
+      playKeystrokeSound(false);
+    }
+
+    // =========================================================================
+    // 2. 依照 AGENTS.md 標準 Schema 定義之四大軟體資料結構 (SOFTWARE_GUIDES)
+    // =========================================================================
+    const SOFTWARE_GUIDES = [
+      {
+        id: "excel",
+        name: "Excel",
+        fullName: "Microsoft Excel 試算表速查表",
+        badge: "SPREADSHEET",
+        accent: "#2E6F40",
+        accentSoft: "#EAF3EC",
+        tagline: "整理報表、快速填滿公式與鎖定參照必備的鍵盤操作，右側提供即時試算表儲存格模擬器。",
+        shortcuts: [
+          {
+            id: "xl-sum",
+            category: "基礎操作",
+            win: ["Alt", "="],
+            mac: ["Cmd", "Shift", "T"],
+            title: "一鍵自動加總 (AutoSum)",
+            desc: "在數字欄位下方按下，自動插入 =SUM(B2:B3) 並計算出總和。",
+            previewTitle: "自動插入加總公式",
+            previewBefore: "B4 儲存格空白 [游標停駐]",
+            previewAfter: "=SUM(B2:B3)  →  計算結果：NT$ 4,600"
+          },
+          {
+            id: "xl-jump",
+            category: "基礎操作",
+            win: ["Ctrl", "Down"],
+            mac: ["Cmd", "Down"],
+            title: "瞬間跳到資料區域最底端",
+            desc: "在幾千行的表格中直接跳到最後一筆有資料的儲存格，不用滾輪慢慢滑。",
+            previewTitle: "跨列快速跳轉",
+            previewBefore: "作用儲存格：B1 (欄位標題)",
+            previewAfter: "作用儲存格跳轉至：B4 (表格最底端紀錄)"
+          },
+          {
+            id: "xl-date",
+            category: "基礎操作",
+            win: ["Ctrl", ";"],
+            mac: ["Ctrl", ";"],
+            title: "插入今天日期",
+            desc: "在儲存格直接填入當天的固定日期（不會隨隔天開檔而變動）。",
+            previewTitle: "快速填入當日日期",
+            previewBefore: "C2 儲存格：(空白)",
+            previewAfter: "C2 儲存格填入：2026/11/16"
+          },
+          {
+            id: "xl-table",
+            category: "編輯排版",
+            win: ["Ctrl", "T"],
+            mac: ["Cmd", "T"],
+            title: "轉為格式化表格",
+            desc: "把一般資料範圍轉成帶篩選箭頭與交錯底色的正式表格。",
+            previewTitle: "建立結構化表格",
+            previewBefore: "A1:C4 一般純文字網格",
+            previewAfter: "套用森林綠標題列 + 自動開啟篩選下拉箭頭 [▼]"
+          },
+          {
+            id: "xl-edit",
+            category: "編輯排版",
+            win: ["F2"],
+            mac: ["Ctrl", "U"],
+            title: "直接編輯儲存格內容",
+            desc: "不用拿滑鼠點兩下，直接把游標放進儲存格文字尾端修改公式。",
+            previewTitle: "進入公式編輯模式",
+            previewBefore: "選取 B4 儲存格 (直接打字會整格覆蓋)",
+            previewAfter: "進入編輯狀態：=SUM(B2:B3)| ← 游標閃爍可修改"
+          },
+          {
+            id: "xl-newline",
+            category: "編輯排版",
+            win: ["Alt", "Enter"],
+            mac: ["Opt", "Enter"],
+            title: "在同一個儲存格內強制換行",
+            desc: "單按 Enter 會跳下一格，加按 Alt 就能在同一格裡打出第二行備註。",
+            previewTitle: "儲存格內多行文字",
+            previewBefore: "A2: 專案設備採購",
+            previewAfter: "A2: 專案設備採購↵ (含稅與運費)"
+          },
+          {
+            id: "xl-flash",
+            category: "效率進階",
+            win: ["Ctrl", "E"],
+            mac: ["Ctrl", "E"],
+            title: "快速填入 (Flash Fill)",
+            desc: "只要手動示範一格拆分姓名或代碼，按下後整欄自動照規律填完。",
+            previewTitle: "依規律智慧拆分欄位",
+            previewBefore: "A2: ORD-101 | C2 示範輸入: 101",
+            previewAfter: "C3: 102、C4: 103 自動依規律瞬間填滿整欄"
+          },
+          {
+            id: "xl-lock",
+            category: "效率進階",
+            win: ["F4"],
+            mac: ["Cmd", "T"],
+            title: "切換公式絕對參照 ($A$1)",
+            desc: "寫公式時鎖定儲存格座標，往下拉複製公式時範圍才不會跑掉。",
+            previewTitle: "鎖定公式參照範圍",
+            previewBefore: "公式列：=B2 * D1 (相對參照)",
+            previewAfter: "公式列：=B2 * $D$1 (加上 $ 鎖死匯率基準格)"
+          },
+          {
+            id: "xl-filter",
+            category: "效率進階",
+            win: ["Ctrl", "Shift", "L"],
+            mac: ["Cmd", "Shift", "F"],
+            title: "開關資料篩選漏斗",
+            desc: "一秒在標題列加上或移除下拉篩選箭頭，快速挑出特定條件資料。",
+            previewTitle: "切換標題列篩選按鈕",
+            previewBefore: "A1: 項目  |  B1: 金額  |  C1: 狀態",
+            previewAfter: "A1: 項目[▼] | B1: 金額[▼] | C1: 狀態[▼]"
+          }
+        ]
+      },
+      {
+        id: "word",
+        name: "Word",
+        fullName: "Microsoft Word 文書排版速查表",
+        badge: "DOCUMENT",
+        accent: "#2B579A",
+        accentSoft: "#EBF1F8",
+        tagline: "寫報告、論文與會議紀錄時，快速統一字體格式、段落行距與分頁的實用組合鍵。",
+        shortcuts: [
+          {
+            id: "wd-bold",
+            category: "基礎操作",
+            win: ["Ctrl", "B"],
+            mac: ["Cmd", "B"],
+            title: "文字加粗 (Bold)",
+            desc: "將選取的重點詞彙或小標題切換為粗體字。",
+            previewTitle: "切換文字粗體樣式",
+            previewBefore: "三、截圖並重點說明製作過程",
+            previewAfter: "【粗體強調】三、截圖並重點說明製作過程"
+          },
+          {
+            id: "wd-find",
+            category: "基礎操作",
+            win: ["Ctrl", "H"],
+            mac: ["Ctrl", "H"],
+            title: "尋找與批次取代文字",
+            desc: "整份報告寫完發現專有名詞打錯時，一鍵把全文舊詞換成新詞。",
+            previewTitle: "全文批次取代",
+            previewBefore: "內文：上傳至 Github 並公開網站",
+            previewAfter: "批次修正：上傳至 GitHub 並公開網站 (共修正 8 處)"
+          },
+          {
+            id: "wd-undo",
+            category: "基礎操作",
+            win: ["Ctrl", "Z"],
+            mac: ["Cmd", "Z"],
+            title: "復原上一步動作",
+            desc: "不小心刪掉整段文字或排版亂掉時，立刻退回上一個狀態。",
+            previewTitle: "復原誤刪段落",
+            previewBefore: "[誤刪導致第四節心得段落消失]",
+            previewAfter: "已復原：完整找回第四節 250 字心得段落"
+          },
+          {
+            id: "wd-clear",
+            category: "編輯排版",
+            win: ["Ctrl", "Space"],
+            mac: ["Ctrl", "Space"],
+            title: "清除選取文字的所有格式",
+            desc: "從網頁複製貼上的文字常帶有奇怪底色與字體，按這組立刻還原純淨預設字型。",
+            previewTitle: "洗掉外部複製的雜亂樣式",
+            previewBefore: "【紅字黃底 18pt 外部網頁字型】參考文獻",
+            previewAfter: "還原標準內文：11pt 深墨灰乾淨字體"
+          },
+          {
+            id: "wd-center",
+            category: "編輯排版",
+            win: ["Ctrl", "E"],
+            mac: ["Cmd", "E"],
+            title: "段落置中對齊",
+            desc: "將封面標題或圖片下方的圖說文字快速置中，不需去工具列找圖示。",
+            previewTitle: "標題與圖說置中對齊",
+            previewBefore: "圖一：網站首頁架構圖 (靠左對齊)",
+            previewAfter: "        圖一：網站首頁架構圖 (置中對齊)        "
+          },
+          {
+            id: "wd-line15",
+            category: "編輯排版",
+            win: ["Ctrl", "5"],
+            mac: ["Cmd", "5"],
+            title: "設定 1.5 倍舒適行距",
+            desc: "單倍行距太擠、兩倍太鬆時，按 Ctrl + 5 立刻改成最易讀的 1.5 倍行高。",
+            previewTitle: "調整段落閱讀行距",
+            previewBefore: "行距 1.0x（上下行文字緊貼）",
+            previewAfter: "行距 1.5x（呈現舒適清爽的頁面呼吸感）"
+          },
+          {
+            id: "wd-pagebreak",
+            category: "效率進階",
+            win: ["Ctrl", "Enter"],
+            mac: ["Cmd", "Enter"],
+            title: "直接插入分頁符號",
+            desc: "新章節要從下一頁頂端開始時，別再狂按好幾個 Enter，用分頁符號才不會跑版。",
+            previewTitle: "插入硬分頁符號",
+            previewBefore: "前頁結尾段落緊接下一章標題",
+            previewAfter: "─── [分頁符號 Page Break] ─── 下章固定於新頁頂端"
+          },
+          {
+            id: "wd-copyfmt",
+            category: "效率進階",
+            win: ["Ctrl", "Shift", "C"],
+            mac: ["Cmd", "Shift", "C"],
+            title: "複製格式（鍵盤版複製刷）",
+            desc: "複製目前標題的字型、顏色與縮排，再搭配 Ctrl+Shift+V 套用到其他標題。",
+            previewTitle: "擷取標題排版樣式",
+            previewBefore: "選取範例：「一、專案目的 (靛藍粗體)」",
+            previewAfter: "樣式已存入剪貼簿，可一鍵套用至所有後續章節"
+          },
+          {
+            id: "wd-fontup",
+            category: "效率進階",
+            win: ["Ctrl", "Shift", "."],
+            mac: ["Cmd", "Shift", "."],
+            title: "逐步放大字體大小",
+            desc: "看著畫面直接微調選取文字的字級，比下拉選單挑數字更直覺。",
+            previewTitle: "視覺化放大標題字級",
+            previewBefore: "專案報告主標題 (12pt)",
+            previewAfter: "專案報告主標題 (16pt 醒目放大)"
+          }
+        ]
+      },
+      {
+        id: "powerpoint",
+        name: "PowerPoint",
+        fullName: "Microsoft PowerPoint 簡報製作速查表",
+        badge: "PRESENTATION",
+        accent: "#C4512D",
+        accentSoft: "#FCEEED",
+        tagline: "調整投影片物件階層、等距複製圖表與上台發表時最實用的操控快捷鍵。",
+        shortcuts: [
+          {
+            id: "ppt-new",
+            category: "基礎操作",
+            win: ["Ctrl", "M"],
+            mac: ["Cmd", "Shift", "N"],
+            title: "新增一張投影片",
+            desc: "注意不是 Ctrl + N（那會開新檔案），按 Ctrl + M 才能在目前簡報插入下一頁。",
+            previewTitle: "插入新投影片頁面",
+            previewBefore: "左側縮圖列：Slide 01 ~ Slide 02",
+            previewAfter: "左側縮圖列：自動插入 Slide 03 (標題與內容版面)"
+          },
+          {
+            id: "ppt-dup",
+            category: "基礎操作",
+            win: ["Ctrl", "D"],
+            mac: ["Cmd", "D"],
+            title: "快速等距複製選取物件",
+            desc: "省去 Ctrl+C 再 Ctrl+V 兩步，還能自動維持水平等距排列。",
+            previewTitle: "一鍵等距複製資訊卡",
+            previewBefore: "畫布僅有：[步驟一卡片]",
+            previewAfter: "畫布自動並列：[步驟一卡片]  →  [步驟二卡片]"
+          },
+          {
+            id: "ppt-play",
+            category: "基礎操作",
+            win: ["F5"],
+            mac: ["Cmd", "Enter"],
+            title: "從第一頁開始全螢幕播放",
+            desc: "上台報告準備開始時，直接進入全螢幕投影片放映模式。",
+            previewTitle: "啟動全螢幕簡報放映",
+            previewBefore: "編輯視窗模式 (含工具列與縮圖)",
+            previewAfter: "[全螢幕放映模式] 正在播放第 1 頁封面"
+          },
+          {
+            id: "ppt-group",
+            category: "編輯排版",
+            win: ["Ctrl", "G"],
+            mac: ["Cmd", "Opt", "G"],
+            title: "將多個圖形群組起來",
+            desc: "把排好的圖示、文字框與背景框綁成一個整體，移動或縮放時才不會散開。",
+            previewTitle: "合併多個獨立圖形為群組",
+            previewBefore: "3 個分散選取框：[圖示] + [標題] + [底框]",
+            previewAfter: "合併為 1 個整體外框，拖曳縮放完美同步"
+          },
+          {
+            id: "ppt-ungroup",
+            category: "編輯排版",
+            win: ["Ctrl", "Shift", "G"],
+            mac: ["Cmd", "Opt", "Shift", "G"],
+            title: "解散物件群組",
+            desc: "需要單獨微調群組裡某一個小圖示的顏色或位置時，一鍵拆開。",
+            previewTitle: "拆解群組個別微調",
+            previewBefore: "選取：[已綁定的流程圖群組]",
+            previewAfter: "已解散群組，可單獨更換其中一顆圖示顏色"
+          },
+          {
+            id: "ppt-order",
+            category: "編輯排版",
+            win: ["Ctrl", "Up"],
+            mac: ["Cmd", "Up"],
+            title: "將物件往上移一層",
+            desc: "文字被新畫的色塊蓋住時，不用按右鍵找順序，直接把物件移到前層。",
+            previewTitle: "調整圖層前後順序",
+            previewBefore: "標題文字被灰色裝飾色塊遮住",
+            previewAfter: "標題文字移至最上層 (Z-Index +1)，清晰完整"
+          },
+          {
+            id: "ppt-playcur",
+            category: "效率進階",
+            win: ["Shift", "F5"],
+            mac: ["Cmd", "Shift", "Enter"],
+            title: "從「目前這一頁」開始播放",
+            desc: "做到第 15 頁想測試動畫效果時，不用從第 1 頁重頭播。",
+            previewTitle: "原地測試當頁動畫",
+            previewBefore: "目前停留在 Slide 15 編輯畫面",
+            previewAfter: "直接從 Slide 15 啟動全螢幕動畫預覽"
+          },
+          {
+            id: "ppt-black",
+            category: "效率進階",
+            win: ["B"],
+            mac: ["B"],
+            title: "播放中切換黑畫面 (Black Screen)",
+            desc: "上台報告中場討論或問答時，按一下 B 讓投影布幕變黑，把聽眾注意力拉回講者身上。",
+            previewTitle: "放映中切換全黑待機畫面",
+            previewBefore: "投影幕顯示複雜數據圖表",
+            previewAfter: "投影幕轉為全黑待機畫面 (再按一次 B 立即恢復)"
+          },
+          {
+            id: "ppt-laser",
+            category: "效率進階",
+            win: ["Ctrl", "L"],
+            mac: ["Cmd", "L"],
+            title: "滑鼠游標變身紅色雷射筆",
+            desc: "在放映模式下切換，直接用滑鼠在畫面上指示重點區域。",
+            previewTitle: "啟用光學雷射筆指示器",
+            previewBefore: "一般滑鼠箭頭游標",
+            previewAfter: "啟動高對比紅色雷射光點，聚焦關鍵數據"
+          }
+        ]
+      },
+      {
+        id: "vscode",
+        name: "VS Code",
+        fullName: "Visual Studio Code 程式編輯速查表",
+        badge: "CODE EDITOR",
+        accent: "#0066B8",
+        accentSoft: "#E6F2FA",
+        tagline: "依照 AGENTS.md 擴充規範建立之第 4 分頁：右側內建微縮程式碼編輯器與終端機模擬視窗。",
+        shortcuts: [
+          {
+            id: "vsc-palette",
+            category: "基礎操作",
+            win: ["Ctrl", "Shift", "P"],
+            mac: ["Cmd", "Shift", "P"],
+            title: "開啟命令面板 (Command Palette)",
+            desc: "VS Code 最核心的萬用鍵，忘記任何功能位置都能直接打字呼叫。",
+            previewTitle: "彈出頂部萬用命令面板",
+            previewBefore: "一般編輯狀態 (正在撰寫 app.js)",
+            previewAfter: "頂部浮現：> Format Document (自動排版程式碼)"
+          },
+          {
+            id: "vsc-quickopen",
+            category: "基礎操作",
+            win: ["Ctrl", "P"],
+            mac: ["Cmd", "P"],
+            title: "輸入檔名快速開檔",
+            desc: "不用在左側資料夾樹翻找，直接打幾個字母就能秒切到目標檔案。",
+            previewTitle: "模糊搜尋秒開專案檔案",
+            previewBefore: "想在多層目錄中尋找 AGENTS.md",
+            previewAfter: "輸入 ag → 立即匹配並切換至 AGENTS.md"
+          },
+          {
+            id: "vsc-sidebar",
+            category: "基礎操作",
+            win: ["Ctrl", "B"],
+            mac: ["Cmd", "B"],
+            title: "收合 / 展開左側檔案總管",
+            desc: "在小螢幕筆電寫程式時，一鍵把左邊欄收起來，讓程式碼視野變寬。",
+            previewTitle: "收合側邊欄釋放視野",
+            previewBefore: "[EXPLORER 檔案樹] | [程式碼編輯區]",
+            previewAfter: "[100% 滿版寬度程式碼編輯區，無干擾寫作]"
+          },
+          {
+            id: "vsc-comment",
+            category: "編輯排版",
+            win: ["Ctrl", "/"],
+            mac: ["Cmd", "/"],
+            title: "切換單行或多行註解",
+            desc: "自動依照目前的語言（HTML、JS、Python）幫選取的程式碼加上或取消註解。",
+            previewTitle: "切換程式碼註解狀態",
+            previewBefore: "const enableAudio = true;",
+            previewAfter: "// const enableAudio = true; (已轉為單行註解)"
+          },
+          {
+            id: "vsc-moveline",
+            category: "編輯排版",
+            win: ["Alt", "Up"],
+            mac: ["Opt", "Up"],
+            title: "將整行程式碼往上搬移",
+            desc: "不用剪下再貼上，直接把游標所在的那一行上下對調位置。",
+            previewTitle: "整行程式碼無損上移",
+            previewBefore: "01: renderUI();\n02: initState(); ← 游標在此行",
+            previewAfter: "01: initState(); ← 整行直接上移至第 1 行\n02: renderUI();"
+          },
+          {
+            id: "vsc-dupline",
+            category: "編輯排版",
+            win: ["Shift", "Alt", "Down"],
+            mac: ["Shift", "Opt", "Down"],
+            title: "向下快速複製整行",
+            desc: "寫重複結構的清單或測試資料時，一秒原地往下生出一模一樣的一行。",
+            previewTitle: "原地向下複製整行程式碼",
+            previewBefore: "01: <kbd class=\"keycap\">Ctrl</kbd>",
+            previewAfter: "01: <kbd class=\"keycap\">Ctrl</kbd>\n02: <kbd class=\"keycap\">Ctrl</kbd> (自動複製新行)"
+          },
+          {
+            id: "vsc-multisel",
+            category: "效率進階",
+            win: ["Ctrl", "D"],
+            mac: ["Cmd", "D"],
+            title: "逐一選取相同詞彙 (多重游標)",
+            desc: "想把附近幾個同名變數一起改名時，每按一次就多抓一個並產生多重游標同步打字。",
+            previewTitle: "多重游標同步改名變數",
+            previewBefore: "let itemCount = 0;  itemCount += 1;",
+            previewAfter: "兩處同時改為：let totalCount = 0;  totalCount += 1;"
+          },
+          {
+            id: "vsc-terminal",
+            category: "效率進階",
+            win: ["Ctrl", "J"],
+            mac: ["Cmd", "J"],
+            title: "顯示 / 隱藏下方終端機面板",
+            desc: "寫完程式碼要跑 git push 或測試指令時，立即拉出底部內建面板。",
+            previewTitle: "彈出底部整合終端機",
+            previewBefore: "僅顯示程式碼編輯區",
+            previewAfter: "底部開啟 TERMINAL：$ git push origin main"
+          },
+          {
+            id: "vsc-del-line",
+            category: "效率進階",
+            win: ["Ctrl", "Shift", "K"],
+            mac: ["Cmd", "Shift", "K"],
+            title: "直接刪除整行程式碼",
+            desc: "不用從行尾拖曳選到行首，游標停在哪裡就能直接把該行乾淨移除。",
+            previewTitle: "瞬間刪除游標所在整行",
+            previewBefore: "02: console.log('debug'); // 準備移除的測試行",
+            previewAfter: "[第 02 行已完整清除，下方行號自動遞補]"
+          }
+        ]
+      }
+    ];
+
+    // =========================================================================
+    // 3. 狀態管理 (State Management)
+    // =========================================================================
+    let currentOS = "win";               // 'win' | 'mac'
+    let currentView = "overview";        // 'overview' | 'excel' | 'word' | 'powerpoint' | 'vscode' | 'pinned'
+    let currentCategory = "all";         // 'all' | '基礎操作' | '編輯排版' | '效率進階'
+    let searchQuery = "";
+    let activeShortcutId = null;
+    let simIsAfter = true;               // 控制右側微縮軟體仿真視窗顯示「按下後」或「按下前」
+    let pinnedIds = ["xl-sum", "wd-pagebreak", "vsc-palette"];
+
+    try {
+      const saved = localStorage.getItem("shortcut_handbook_pins");
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) pinnedIds = parsed;
+      }
+    } catch (e) {}
+
+    function savePins() {
+      try {
+        localStorage.setItem("shortcut_handbook_pins", JSON.stringify(pinnedIds));
+      } catch (e) {}
+    }
+
+    // =========================================================================
+    // 4. 微縮軟體仿真視窗渲染器 (Live Mini App Sandbox)
+    // =========================================================================
+    function renderMiniSimulator(guide, item, isAfter) {
+      const viewport = document.getElementById("simViewport");
+      const winTitle = document.getElementById("simWindowTitle");
+      if (!viewport || !guide || !item) return;
+
+      const keys = currentOS === "win" ? item.win : item.mac;
+      const comboStr = keys.map(formatKeyLabel).join(" + ");
+      const stateBadge = isAfter
+        ? `<span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold text-white" style="background:${guide.accent}">AFTER (${comboStr})</span>`
+        : `<span class="px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-[#DFD9CE] text-[#5E646E]">BEFORE (按下前原始狀態)</span>`;
+
+      if (guide.id === "excel") {
+        winTitle.textContent = "Excel — Q4_預算報表.xlsx";
+        const fxText = isAfter ? item.previewAfter : item.previewBefore;
+        const cellB4 = isAfter
+          ? `<td class="border border-[#2E6F40] bg-[#EAF3EC] px-2 py-1 font-mono font-bold text-[#2E6F40] sim-animate">${item.id === 'xl-sum' ? '4,600' : '✓ 已套用'}</td>`
+          : `<td class="border border-[#C9C2B4] bg-white px-2 py-1 font-mono text-[#8C929C]">[游標位置]</td>`;
+
+        viewport.innerHTML = `
+          <div class="space-y-2 sim-animate">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] font-mono text-[#5E646E]">CELL SANDBOX</span>
+              ${stateBadge}
+            </div>
+            <!-- 公式列 -->
+            <div class="flex items-center gap-2 bg-white border border-[#C9C2B4] rounded px-2.5 py-1 text-xs font-mono">
+              <span class="font-bold text-[#2E6F40] italic">fx</span>
+              <span class="text-[#DFD9CE]">|</span>
+              <span class="truncate font-semibold text-[#23272F]">${fxText}</span>
+            </div>
+            <!-- 試算表網格 -->
+            <table class="w-full border-collapse text-xs bg-white">
+              <thead>
+                <tr class="bg-[#EDE8DF] text-[#5E646E] font-mono text-[11px]">
+                  <th class="border border-[#C9C2B4] w-8 py-1">#</th>
+                  <th class="border border-[#C9C2B4] px-2 py-1 text-left">A (項目)</th>
+                  <th class="border border-[#C9C2B4] px-2 py-1 text-right">B (金額)</th>
+                  <th class="border border-[#C9C2B4] px-2 py-1 text-left">C (備註)</th>
+                </tr>
+              </thead>
+              <tbody class="font-mono text-[11px]">
+                <tr>
+                  <td class="border border-[#C9C2B4] bg-[#EDE8DF] text-center text-[#5E646E]">2</td>
+                  <td class="border border-[#C9C2B4] px-2 py-1">雲端主機租賃</td>
+                  <td class="border border-[#C9C2B4] px-2 py-1 text-right">1,200</td>
+                  <td class="border border-[#C9C2B4] px-2 py-1 text-[#2E6F40]">${item.id === 'xl-date' && isAfter ? '2026/11/16' : '固定支出'}</td>
+                </tr>
+                <tr>
+                  <td class="border border-[#C9C2B4] bg-[#EDE8DF] text-center text-[#5E646E]">3</td>
+                  <td class="border border-[#C9C2B4] px-2 py-1">測試設備採購</td>
+                  <td class="border border-[#C9C2B4] px-2 py-1 text-right">3,400</td>
+                  <td class="border border-[#C9C2B4] px-2 py-1">硬體專案</td>
+                </tr>
+                <tr>
+                  <td class="border border-[#C9C2B4] bg-[#EDE8DF] text-center text-[#5E646E]">4</td>
+                  <td class="border border-[#C9C2B4] px-2 py-1 font-semibold">合計 / 動作區</td>
+                  ${cellB4}
+                  <td class="border border-[#C9C2B4] px-2 py-1 text-[10px] text-[#5E646E]">${item.previewTitle}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        `;
+      } else if (guide.id === "word") {
+        winTitle.textContent = "Word — 專案規格報告書.docx";
+        viewport.innerHTML = `
+          <div class="space-y-2 sim-animate">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] font-mono text-[#5E646E]">PAGE LAYOUT VIEW</span>
+              ${stateBadge}
+            </div>
+            <!-- 尺規列 -->
+            <div class="h-4 bg-[#EDE8DF] border border-[#C9C2B4] rounded-t flex items-center px-3 font-mono text-[9px] text-[#5E646E] justify-between">
+              <span>1﹒﹒﹒2﹒﹒﹒3﹒﹒﹒4﹒﹒﹒5﹒﹒﹒6﹒﹒﹒7</span>
+              <span>100%</span>
+            </div>
+            <!-- A4 模擬紙張 -->
+            <div class="bg-white border border-[#C9C2B4] rounded-b p-3.5 shadow-inner space-y-2">
+              <div class="text-[11px] font-mono text-[#2B579A] font-semibold">${item.previewTitle}</div>
+              <div class="p-2.5 rounded border ${isAfter ? 'border-[#2B579A] bg-[#EBF1F8]/60 font-bold text-[#23272F]' : 'border-dashed border-[#C9C2B4] text-[#5E646E]'} text-xs leading-relaxed transition-all">
+                ${isAfter ? item.previewAfter : item.previewBefore}
+              </div>
+              <div class="h-2 bg-[#EFECE5] rounded w-5/6"></div>
+              <div class="h-2 bg-[#EFECE5] rounded w-2/3"></div>
+            </div>
+          </div>
+        `;
+      } else if (guide.id === "powerpoint") {
+        winTitle.textContent = "PowerPoint — 期末專題簡報.pptx";
+        viewport.innerHTML = `
+          <div class="space-y-2 sim-animate">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] font-mono text-[#5E646E]">SLIDE STAGE (16:9)</span>
+              ${stateBadge}
+            </div>
+            <div class="grid grid-cols-12 gap-2">
+              <!-- 左側縮圖列 -->
+              <div class="col-span-3 space-y-1.5">
+                <div class="p-1.5 rounded bg-white border border-[#C9C2B4] text-[9px] font-mono text-[#5E646E]">01 封面</div>
+                <div class="p-1.5 rounded bg-white border-2 border-[#C4512D] text-[9px] font-mono font-bold text-[#C4512D]">02 架構</div>
+                <div class="p-1.5 rounded ${isAfter && item.id === 'ppt-new' ? 'bg-[#FCEEED] border-2 border-[#C4512D] text-[#C4512D] font-bold' : 'bg-white border border-[#C9C2B4] text-[#5E646E]'} text-[9px] font-mono">
+                  ${isAfter && item.id === 'ppt-new' ? '03 [新頁]' : '03 結論'}
+                </div>
+              </div>
+              <!-- 右側 16:9 簡報舞台 -->
+              <div class="col-span-9 rounded border border-[#C9C2B4] ${isAfter && item.id === 'ppt-black' ? 'bg-[#181A1F] text-white' : 'bg-white text-[#23272F]'} p-3 flex flex-col justify-between min-h-[128px] shadow-sm">
+                <div class="text-[10px] font-mono text-[#C4512D] font-semibold">${item.previewTitle}</div>
+                <div class="my-auto p-2 rounded ${isAfter && item.id !== 'ppt-black' ? 'bg-[#FCEEED] border border-[#C4512D] font-semibold' : 'bg-[#FAF8F5] border border-[#DFD9CE]'} text-xs font-mono">
+                  ${isAfter ? item.previewAfter : item.previewBefore}
+                </div>
+                <div class="flex items-center justify-between text-[9px] font-mono text-[#8C929C]">
+                  <span>SLIDE 02 / 15</span>
+                  <span>${isAfter ? 'ACTION APPLIED' : 'EDIT MODE'}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      } else {
+        winTitle.textContent = "VS Code — shortcut-handbook / app.js";
+        viewport.innerHTML = `
+          <div class="space-y-2 sim-animate">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] font-mono text-[#5E646E]">EDITOR BUFFER (UTF-8)</span>
+              ${stateBadge}
+            </div>
+            <!-- 模擬程式碼編輯器視窗 -->
+            <div class="rounded border border-[#C9C2B4] bg-[#1E222A] text-[#E5E9F0] p-3 font-mono text-xs space-y-2 shadow-inner">
+              <div class="flex items-center justify-between text-[10px] text-[#8892B0] border-b border-[#2E3440] pb-1">
+                <span>src/app.js</span>
+                <span class="text-[#38BDF8]">${item.previewTitle}</span>
+              </div>
+              <pre class="text-[11px] leading-relaxed whitespace-pre-wrap ${isAfter ? 'text-[#A3BE8C] font-semibold' : 'text-[#D8DEE9]'}">${isAfter ? item.previewAfter : item.previewBefore}</pre>
+              <div class="pt-1 border-t border-[#2E3440] flex items-center justify-between text-[10px] text-[#8892B0]">
+                <span>Ln 14, Col 22</span>
+                <span>JavaScript · Prettier</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    function toggleSimState() {
+      simIsAfter = !simIsAfter;
+      playKeystrokeSound(false);
+      const guide = SOFTWARE_GUIDES.find(g => g.id === currentView);
+      const item = guide ? guide.shortcuts.find(s => s.id === activeShortcutId) : null;
+      if (guide && item) {
+        renderMiniSimulator(guide, item, simIsAfter);
+      }
+    }
+
+    // =========================================================================
+    // 5. 軟體橫幅幾何插圖與首頁卡片渲染
+    // =========================================================================
+    function buildBannerSvg(accent, accentSoft, badgeText) {
+      return `
+        <svg viewBox="0 0 220 88" class="w-48 sm:w-52 h-auto rounded-lg border border-[#DFD9CE] bg-[#FAF8F5] p-1.5" role="img" aria-label="${badgeText}幾何工程圖解">
+          <rect x="0" y="0" width="220" height="88" rx="5" fill="${accentSoft}"/>
+          <rect x="12" y="12" width="122" height="64" rx="4" fill="#FFFFFF" stroke="#23272F" stroke-width="1.8"/>
+          <rect x="12" y="12" width="122" height="16" rx="3" fill="${accent}"/>
+          <text x="20" y="23" fill="#FFFFFF" font-family="JetBrains Mono, monospace" font-weight="700" font-size="9">${badgeText}</text>
+          <line x1="22" y1="42" x2="112" y2="42" stroke="#C9C2B4" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="22" y1="54" x2="92" y2="54" stroke="#C9C2B4" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="22" y1="65" x2="72" y2="65" stroke="${accent}" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- 立體機械鍵帽剖面 -->
+          <g transform="translate(148, 18)">
+            <rect x="2" y="5" width="56" height="48" rx="6" fill="#ABA394"/>
+            <rect x="0" y="0" width="56" height="48" rx="6" fill="#FFFFFF" stroke="#23272F" stroke-width="1.8"/>
+            <rect x="6" y="6" width="44" height="34" rx="4" fill="${accentSoft}" stroke="${accent}" stroke-width="1.2"/>
+            <text x="28" y="27" text-anchor="middle" fill="${accent}" font-family="JetBrains Mono, monospace" font-weight="700" font-size="11">PRESS</text>
+          </g>
+        </svg>
+      `;
+    }
+
+    function renderOverviewCards() {
+      const grid = document.getElementById("overviewCardsGrid");
+      grid.innerHTML = SOFTWARE_GUIDES.map(guide => {
+        const sample = guide.shortcuts.slice(0, 2);
+        const sampleHtml = sample.map(s => {
+          const keys = currentOS === "win" ? s.win : s.mac;
+          return `
+            <div class="flex items-center justify-between text-xs py-1.5 border-t border-[#EDE8DF]">
+              <span class="text-[#5E646E] truncate pr-2">${s.title}</span>
+              <span class="shrink-0 flex items-center gap-0.5">${renderKeycaps(keys)}</span>
+            </div>
+          `;
+        }).join("");
+
+        return `
+          <div onclick="switchGuide('${guide.id}')" class="paper-card rounded-xl p-4 cursor-pointer hover:border-[#23272F] transition flex flex-col justify-between group">
+            <div>
+              <div class="flex items-center justify-between mb-2.5">
+                <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded" style="background:${guide.accentSoft}; color:${guide.accent}">
+                  ${guide.badge}
+                </span>
+                <span class="text-xs font-mono text-[#5E646E]">${guide.shortcuts.length} KEYS</span>
+              </div>
+              <h3 class="text-lg font-bold text-[#23272F] group-hover:underline">${guide.name}</h3>
+              <p class="text-xs text-[#5E646E] mt-1 leading-relaxed line-clamp-2">${guide.tagline}</p>
+            </div>
+            <div class="mt-4 pt-1">
+              ${sampleHtml}
+              <div class="mt-2.5 text-xs font-mono font-semibold flex items-center justify-between" style="color:${guide.accent}">
+                <span>OPEN SIMULATOR</span>
+                <span>→</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function formatKeyLabel(k) {
+      const map = {
+        "Win": "⊞ Win",
+        "Cmd": "⌘ Cmd",
+        "Opt": "⌥ Opt",
+        "Shift": "⇧ Shift",
+        "Enter": "Enter ↵",
+        "Up": "↑",
+        "Down": "↓",
+        "Left": "←",
+        "Right": "→",
+        "Space": "Space"
+      };
+      return map[k] || k;
+    }
+
+    function renderKeycaps(keysArray) {
+      return keysArray.map(k => `<kbd class="keycap">${formatKeyLabel(k)}</kbd>`).join('<span class="text-[#8C929C] text-[11px] mx-0.5">+</span>');
+    }
+
+    // =========================================================================
+    // 6. 分頁切換、鍵盤亮燈與連按示範動畫
+    // =========================================================================
+    function switchGuide(target) {
+      currentView = target;
+      currentCategory = "all";
+      searchQuery = "";
+      const searchInput = document.getElementById("shortcutSearchInput");
+      if (searchInput) searchInput.value = "";
+
+      const navIds = ["overview", "excel", "word", "powerpoint", "vscode", "pinned"];
+      navIds.forEach(id => {
+        const btn = document.getElementById("nav-" + id);
+        if (!btn) return;
+        if (id === target) {
+          btn.className = "px-3 py-1.5 rounded-md text-xs sm:text-sm font-semibold transition whitespace-nowrap bg-white text-[#23272F] shadow-sm flex items-center gap-1.5";
+        } else {
+          btn.className = "px-3 py-1.5 rounded-md text-xs sm:text-sm font-medium transition whitespace-nowrap text-[#5E646E] hover:text-[#23272F] flex items-center gap-1.5";
+        }
+      });
+
+      const vOverview = document.getElementById("view-overview");
+      const vGuide = document.getElementById("view-guide");
+      const vPinned = document.getElementById("view-pinned");
+
+      if (target === "overview") {
+        vOverview.classList.remove("hidden");
+        vGuide.classList.add("hidden");
+        vPinned.classList.add("hidden");
+        renderOverviewCards();
+      } else if (target === "pinned") {
+        vOverview.classList.add("hidden");
+        vGuide.classList.add("hidden");
+        vPinned.classList.remove("hidden");
+        renderPinnedView();
+      } else {
+        vOverview.classList.add("hidden");
+        vPinned.classList.add("hidden");
+        vGuide.classList.remove("hidden");
+        const guide = SOFTWARE_GUIDES.find(g => g.id === target);
+        if (guide) {
+          document.documentElement.style.setProperty("--active-accent", guide.accent);
+          document.documentElement.style.setProperty("--active-soft", guide.accentSoft);
+          renderGuideView(guide);
+          if (guide.shortcuts.length > 0) {
+            selectShortcut(guide.shortcuts[0].id, false);
+          }
+        }
+      }
+      updatePinnedBadge();
+    }
+
+    function renderGuideView(guide) {
+      const banner = document.getElementById("guideBanner");
+      banner.style.borderLeftColor = guide.accent;
+
+      const badge = document.getElementById("guideBadge");
+      badge.textContent = guide.badge;
+      badge.style.backgroundColor = guide.accentSoft;
+      badge.style.color = guide.accent;
+
+      document.getElementById("guideCountLabel").textContent = `${guide.shortcuts.length} SHORTCUTS`;
+      document.getElementById("guideTitle").textContent = guide.fullName;
+      document.getElementById("guideTagline").textContent = guide.tagline;
+      document.getElementById("guideIllustration").innerHTML = buildBannerSvg(guide.accent, guide.accentSoft, guide.badge);
+
+      const simBtn = document.getElementById("simToggleBtn");
+      if (simBtn) simBtn.style.backgroundColor = guide.accent;
+
+      updateCategoryFilterButtons(guide);
+      renderShortcutsGrid(guide);
+    }
+
+    function updateCategoryFilterButtons(guide) {
+      const cats = ["all", "基礎操作", "編輯排版", "效率進階"];
+      cats.forEach(c => {
+        const btn = document.getElementById("catFilter-" + c);
+        if (!btn) return;
+        const count = c === "all"
+          ? guide.shortcuts.length
+          : guide.shortcuts.filter(s => s.category === c).length;
+        btn.textContent = c === "all" ? `全部 (${count})` : `${c} (${count})`;
+
+        if (c === currentCategory) {
+          btn.style.backgroundColor = guide.accent;
+          btn.style.color = "#FFFFFF";
+        } else {
+          btn.style.backgroundColor = "#EDE8DF";
+          btn.style.color = "#23272F";
+        }
+      });
+    }
+
+    function setCategoryFilter(cat) {
+      currentCategory = cat;
+      const guide = SOFTWARE_GUIDES.find(g => g.id === currentView);
+      if (!guide) return;
+      updateCategoryFilterButtons(guide);
+      renderShortcutsGrid(guide);
+    }
+
+    function handleShortcutSearch(val) {
+      searchQuery = val.trim().toLowerCase();
+      const guide = SOFTWARE_GUIDES.find(g => g.id === currentView);
+      if (guide) renderShortcutsGrid(guide);
+    }
+
+    function renderShortcutsGrid(guide) {
+      const grid = document.getElementById("shortcutsGrid");
+      const filtered = guide.shortcuts.filter(item => {
+        const matchCat = currentCategory === "all" || item.category === currentCategory;
+        const keys = (currentOS === "win" ? item.win : item.mac).join(" ").toLowerCase();
+        const matchSearch = !searchQuery ||
+          item.title.toLowerCase().includes(searchQuery) ||
+          item.desc.toLowerCase().includes(searchQuery) ||
+          keys.includes(searchQuery);
+        return matchCat && matchSearch;
+      });
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div class="md:col-span-3 paper-card rounded-xl p-8 text-center text-xs text-[#5E646E]">
+            找不到符合「${searchQuery}」的快捷鍵，請試試其他關鍵字或切換回「全部」分類。
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(item => {
+        const keys = currentOS === "win" ? item.win : item.mac;
+        const isPinned = pinnedIds.includes(item.id);
+        const isSelected = activeShortcutId === item.id;
+        return `
+          <div onclick="selectShortcut('${item.id}', true)" class="paper-card shortcut-row rounded-xl p-4 cursor-pointer flex flex-col justify-between ${isSelected ? 'selected-row' : ''}">
+            <div>
+              <div class="flex items-center justify-between gap-2 mb-2.5">
+                <div class="flex flex-wrap items-center gap-1">
+                  ${renderKeycaps(keys)}
+                </div>
+                <button onclick="event.stopPropagation(); togglePin('${item.id}')" title="加入或取消常用釘選" class="w-7 h-7 rounded-md flex items-center justify-center text-xs font-mono transition ${isPinned ? 'bg-[#FEF3C7] text-[#B45309] border border-[#F59E0B]/50 font-bold' : 'bg-[#FAF8F5] text-[#8C929C] hover:text-[#23272F] border border-[#DFD9CE]'}">
+                  ★
+                </button>
+              </div>
+              <h4 class="text-sm font-bold text-[#23272F]">${item.title}</h4>
+              <p class="text-xs text-[#5E646E] mt-1 leading-relaxed">${item.desc}</p>
+            </div>
+            <div class="mt-3 pt-2 border-t border-[#EDE8DF] flex items-center justify-between text-[11px] font-mono">
+              <span class="px-2 py-0.5 rounded bg-[#FAF8F5] text-[#5E646E] border border-[#DFD9CE]">${item.category}</span>
+              <span class="text-[#5E646E]">SIMULATE ↑</span>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function selectShortcut(shortcutId, playSound = true) {
+      const guide = SOFTWARE_GUIDES.find(g => g.id === currentView) ||
+                    SOFTWARE_GUIDES.find(g => g.shortcuts.some(s => s.id === shortcutId));
+      if (!guide) return;
+      const item = guide.shortcuts.find(s => s.id === shortcutId);
+      if (!item) return;
+
+      activeShortcutId = shortcutId;
+      simIsAfter = true;
+      if (playSound) playKeystrokeSound(false);
+
+      const keys = currentOS === "win" ? item.win : item.mac;
+
+      document.querySelectorAll(".vk-key").forEach(el => {
+        const keyAttr = el.getAttribute("data-key");
+        if (keys.includes(keyAttr)) {
+          el.classList.add("lit");
+        } else {
+          el.classList.remove("lit");
+        }
+      });
+
+      const pill = document.getElementById("activeComboPill");
+      pill.textContent = keys.map(formatKeyLabel).join(" + ");
+      pill.style.backgroundColor = guide.accentSoft;
+      pill.style.color = guide.accent;
+
+      document.getElementById("demoCategoryTag").textContent = item.category;
+      document.getElementById("demoTitle").textContent = item.title;
+      document.getElementById("demoDesc").textContent = item.desc;
+
+      renderMiniSimulator(guide, item, true);
+
+      if (currentView === guide.id) {
+        renderShortcutsGrid(guide);
+      }
+    }
+
+    // 連按示範動畫：依序一顆顆按下組合鍵並發出機械鍵盤聲，最後觸發視窗狀態切換
+    let replayTimers = [];
+    function replayCurrentCombo() {
+      replayTimers.forEach(t => clearTimeout(t));
+      replayTimers = [];
+
+      const guide = SOFTWARE_GUIDES.find(g => g.id === currentView);
+      if (!guide) return;
+      const item = guide.shortcuts.find(s => s.id === activeShortcutId) || guide.shortcuts[0];
+      if (!item) return;
+
+      const keys = currentOS === "win" ? item.win : item.mac;
+      document.querySelectorAll(".vk-key").forEach(el => el.classList.remove("lit"));
+      simIsAfter = false;
+      renderMiniSimulator(guide, item, false);
+
+      keys.forEach((k, idx) => {
+        const t = setTimeout(() => {
+          playKeystrokeSound(false);
+          const el = document.querySelector(`.vk-key[data-key="${k}"]`);
+          if (el) el.classList.add("lit");
+          if (idx === keys.length - 1) {
+            simIsAfter = true;
+            renderMiniSimulator(guide, item, true);
+          }
+        }, (idx + 1) * 220);
+        replayTimers.push(t);
+      });
+    }
+
+    // 直接用滑鼠點擊 3D 鍵盤上的任一顆鍵帽（純粹體驗單鍵按壓手感與軸體音效，不亂跳其他快捷鍵）
+    function pressVirtualKey(keyName) {
+      if (document.activeElement && document.activeElement.blur) {
+        document.activeElement.blur();
+      }
+      playKeystrokeSound(false);
+      const el = document.querySelector(`.vk-key[data-key="${keyName}"]`);
+      if (el) {
+        el.classList.add("lit");
+        setTimeout(() => {
+          playKeystrokeSound(true);
+          // 若這顆鍵不屬於目前選中快捷鍵的組合，放開時自動熄滅
+          const guide = SOFTWARE_GUIDES.find(g => g.id === currentView);
+          const item = guide ? guide.shortcuts.find(s => s.id === activeShortcutId) : null;
+          const activeKeys = item ? (currentOS === "win" ? item.win : item.mac) : [];
+          if (!activeKeys.includes(keyName)) {
+            el.classList.remove("lit");
+          }
+        }, 150);
+      }
+    }
+
+    // =========================================================================
+    // 7. Windows / Mac 系統切換與實體鍵盤連動
+    // =========================================================================
+    function updateKeyboardModifierRow(os) {
+      const m1 = document.getElementById("vk-mod-1");
+      const m2 = document.getElementById("vk-mod-2");
+      const m3 = document.getElementById("vk-mod-3");
+      if (!m1 || !m2 || !m3) return;
+      if (os === "win") {
+        m1.setAttribute("data-key", "Ctrl");
+        m1.textContent = "Ctrl";
+        m2.setAttribute("data-key", "Win");
+        m2.textContent = "⊞ Win";
+        m3.setAttribute("data-key", "Alt");
+        m3.textContent = "Alt";
+      } else {
+        m1.setAttribute("data-key", "Ctrl");
+        m1.textContent = "control";
+        m2.setAttribute("data-key", "Opt");
+        m2.textContent = "⌥ Opt";
+        m3.setAttribute("data-key", "Cmd");
+        m3.textContent = "⌘ Cmd";
+      }
+    }
+
+    function setOS(os) {
+      currentOS = os;
+      playKeystrokeSound(false);
+      const winBtn = document.getElementById("osBtn-win");
+      const macBtn = document.getElementById("osBtn-mac");
+      if (os === "win") {
+        winBtn.className = "px-2.5 py-1 rounded text-xs font-mono font-semibold transition bg-white text-[#23272F] shadow-sm";
+        macBtn.className = "px-2.5 py-1 rounded text-xs font-mono font-semibold transition text-[#5E646E] hover:text-[#23272F]";
+      } else {
+        macBtn.className = "px-2.5 py-1 rounded text-xs font-mono font-semibold transition bg-white text-[#23272F] shadow-sm";
+        winBtn.className = "px-2.5 py-1 rounded text-xs font-mono font-semibold transition text-[#5E646E] hover:text-[#23272F]";
+      }
+      updateKeyboardModifierRow(os);
+
+      if (currentView === "overview") {
+        renderOverviewCards();
+      } else if (currentView === "pinned") {
+        renderPinnedView();
+      } else {
+        const guide = SOFTWARE_GUIDES.find(g => g.id === currentView);
+        if (guide) {
+          renderShortcutsGrid(guide);
+          if (activeShortcutId) selectShortcut(activeShortcutId, false);
+        }
+      }
+    }
+
+    function togglePin(shortcutId) {
+      playKeystrokeSound(false);
+      const idx = pinnedIds.indexOf(shortcutId);
+      if (idx >= 0) {
+        pinnedIds.splice(idx, 1);
+      } else {
+        pinnedIds.push(shortcutId);
+      }
+      savePins();
+      updatePinnedBadge();
+
+      if (currentView === "pinned") {
+        renderPinnedView();
+      } else {
+        const guide = SOFTWARE_GUIDES.find(g => g.id === currentView);
+        if (guide) renderShortcutsGrid(guide);
+      }
+    }
+
+    function updatePinnedBadge() {
+      const badge = document.getElementById("pinnedCountBadge");
+      if (badge) badge.textContent = pinnedIds.length;
+    }
+
+    function renderPinnedView() {
+      const grid = document.getElementById("pinnedGrid");
+      const pinnedItems = [];
+      SOFTWARE_GUIDES.forEach(guide => {
+        guide.shortcuts.forEach(s => {
+          if (pinnedIds.includes(s.id)) {
+            pinnedItems.push({ guide, shortcut: s });
+          }
+        });
+      });
+
+      if (pinnedItems.length === 0) {
+        grid.innerHTML = `
+          <div class="md:col-span-3 paper-card rounded-xl p-8 text-center text-xs text-[#5E646E]">
+            目前還沒有釘選任何快捷鍵。在各軟體分頁點擊右上角的「★」即可加入隨身釘選夾。
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = pinnedItems.map(({ guide, shortcut }) => {
+        const keys = currentOS === "win" ? shortcut.win : shortcut.mac;
+        return `
+          <div onclick="switchGuide('${guide.id}'); selectShortcut('${shortcut.id}', true);" class="paper-card shortcut-row rounded-xl p-4 cursor-pointer flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between gap-2 mb-2.5">
+                <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded" style="background:${guide.accentSoft}; color:${guide.accent}">
+                  ${guide.name}
+                </span>
+                <button onclick="event.stopPropagation(); togglePin('${shortcut.id}')" title="取消釘選" class="w-7 h-7 rounded-md flex items-center justify-center text-xs bg-[#FEF3C7] text-[#B45309] border border-[#F59E0B]/50 font-bold">
+                  ★
+                </button>
+              </div>
+              <div class="flex flex-wrap items-center gap-1 mb-2">
+                ${renderKeycaps(keys)}
+              </div>
+              <h4 class="text-sm font-bold text-[#23272F]">${shortcut.title}</h4>
+              <p class="text-xs text-[#5E646E] mt-1 leading-relaxed">${shortcut.desc}</p>
+            </div>
+            <div class="mt-3 pt-2 border-t border-[#EDE8DF] flex items-center justify-between text-[11px] font-mono text-[#5E646E]">
+              <span>${shortcut.category}</span>
+              <span>OPEN IN ${guide.name.toUpperCase()} →</span>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    // 支援實體鍵盤按壓與放開之真實雙段音效、攔截瀏覽器預設熱鍵衝突
+    let capturePhysicalKeys = true;
+    const pressedPhysicalSet = new Set();
+
+    function toggleKeyboardCapture() {
+      capturePhysicalKeys = !capturePhysicalKeys;
+      const btn = document.getElementById("kbCaptureBtn");
+      if (!btn) return;
+      if (capturePhysicalKeys) {
+        btn.textContent = "● 實體鍵盤攔截：開啟";
+        btn.className = "text-[11px] font-mono font-semibold px-2.5 py-1 rounded bg-[#23272F] text-white border border-[#23272F] transition";
+      } else {
+        btn.textContent = "○ 實體鍵盤攔截：關閉";
+        btn.className = "text-[11px] font-mono font-semibold px-2.5 py-1 rounded bg-[#EDE8DF] text-[#5E646E] border border-[#C9C2B4] transition";
+      }
+      if (btn.blur) btn.blur();
+    }
+
+    const keyMap = {
+      "Control": "Ctrl",
+      "Enter": "Enter",
+      " ": "Space",
+      "Tab": "Tab",
+      "Backspace": "Backspace",
+      "Escape": "Esc",
+      "ArrowUp": "Up",
+      "ArrowDown": "Down",
+      "ArrowLeft": "Left",
+      "ArrowRight": "Right"
+    };
+
+    function resolvePhysicalKey(e) {
+      if (e.key === "Meta") return currentOS === "win" ? "Win" : "Cmd";
+      if (e.key === "Alt") return currentOS === "win" ? "Alt" : "Opt";
+      if (e.key === "Shift") return "Shift";
+      return keyMap[e.key] || e.key.toUpperCase();
+    }
+
+    window.addEventListener("keydown", (e) => {
+      const tag = document.activeElement ? document.activeElement.tagName : "";
+      if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return;
+
+      // 在軟體速查分頁且開啟攔截時，阻止瀏覽器預設動作（例如 Space/方向鍵捲動網頁、Tab 切換焦點、Enter 點擊上次按鈕、Ctrl+P/F/S/D 觸發瀏覽器行為）
+      if (capturePhysicalKeys && currentView !== "overview" && currentView !== "pinned") {
+        e.preventDefault();
+        e.stopPropagation();
+        if (tag === "BUTTON" && document.activeElement.blur) {
+          document.activeElement.blur();
+        }
+      }
+
+      if (!e.repeat) playKeystrokeSound(false);
+      if (currentView === "overview" || currentView === "pinned") return;
+
+      const normalized = resolvePhysicalKey(e);
+      pressedPhysicalSet.add(normalized);
+
+      const targetKey = document.querySelector(`.vk-key[data-key="${normalized}"]`);
+      if (targetKey) {
+        targetKey.classList.add("lit");
+      }
+
+      // 檢查目前同時按下的實體按鍵是否剛好完整匹配某組快捷鍵（完全符合才切換，單按 Ctrl 不會亂跳）
+      const guide = SOFTWARE_GUIDES.find(g => g.id === currentView);
+      if (guide) {
+        const exactMatch = guide.shortcuts.find(s => {
+          const reqKeys = currentOS === "win" ? s.win : s.mac;
+          return reqKeys.length === pressedPhysicalSet.size && reqKeys.every(k => pressedPhysicalSet.has(k));
+        });
+        if (exactMatch) {
+          selectShortcut(exactMatch.id, false);
+        }
+      }
+    }, { passive: false });
+
+    window.addEventListener("keyup", (e) => {
+      const tag = document.activeElement ? document.activeElement.tagName : "";
+      if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return;
+
+      if (capturePhysicalKeys && currentView !== "overview" && currentView !== "pinned") {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+
+      playKeystrokeSound(true);
+      if (currentView === "overview" || currentView === "pinned") return;
+
+      const normalized = resolvePhysicalKey(e);
+      pressedPhysicalSet.delete(normalized);
+
+      const guide = SOFTWARE_GUIDES.find(g => g.id === currentView);
+      const item = guide ? guide.shortcuts.find(s => s.id === activeShortcutId) : null;
+      const activeKeys = item ? (currentOS === "win" ? item.win : item.mac) : [];
+
+      const targetKey = document.querySelector(`.vk-key[data-key="${normalized}"]`);
+      if (targetKey && !activeKeys.includes(normalized)) {
+        setTimeout(() => targetKey.classList.remove("lit"), 100);
+      }
+    }, { passive: false });
+
+    window.addEventListener("blur", () => {
+      pressedPhysicalSet.clear();
+    });
+
+    window.onload = function() {
+      switchGuide("overview");
+    };
+  </script>
+</body>
+</html>
